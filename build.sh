@@ -3,7 +3,9 @@ set -o pipefail
 echo "getting op config"
 git clone https://github.com/CTCL/op_config_tool.git /usr/src/op_config_tool
 cd /usr/src/op_config_tool
-source ./setup.sh
+. ./setup.sh
+echo "fetching op config file"
+. ./fetch.sh
 echo "setting up github credentials"
 echo "machine github.com login $(opc GITHUB_USER) password $(opc GITHUB_PASSWORD)" > /root/.netrc
 echo "cloning repo to build"
