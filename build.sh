@@ -17,7 +17,7 @@ echo "building image"
 curl -f -sS -X POST -H "Content-Type:application/tar" --data-binary '@repo.tar.gz' --unix-socket /var/run/docker.sock http:/build?t=$DOCKER_REPO_NAME:$(opc DOCKER_TAG)
 
 echo "creating container for tests"
-container_id=$(curl -f -sS -X POST -H "Content-Type:application/json" --data-binary "{\"Image\": \"$DOCKER_REPO_NAME:$(opc DOCKER_TAG)\", \"Cmd\": [\"/bin/sh\", \"-c\", \"$(opc TEST_COMMAND)\"]}" --unix-socket /var/run/docker.sock http:/containers/create | python -c "import sys, json; print json.load(sys.stdin)['Id']")
+container_id=$(curl -f -sS -X POST -H "Content-Type:application/json" --data-binary "{\"Image\": \"$DOCKER_REPO_NAME:$(opc DOCKER_TAG)\", \"Cmd\": [\"/bin/sh\", \"-c\", \"$TEST_COMMAND\"]}" --unix-socket /var/run/docker.sock http:/containers/create | python -c "import sys, json; print json.load(sys.stdin)['Id']")
 
 echo "starting container for tests"
 curl -f -sS -X POST --unix-socket /var/run/docker.sock http:/containers/$container_id/start
