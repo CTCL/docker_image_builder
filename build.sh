@@ -7,7 +7,12 @@ cd /usr/src/op_config_tool
 echo "fetching op config file"
 . ./fetch.sh
 echo "setting up github credentials"
-echo "machine github.com login $(opc GITHUB_USER) password $(opc GITHUB_PASSWORD)" > /root/.netrc
+aws s3 cp s3://$OP_CONFIG_BUCKET/$PRIVATE_KEY_FILE ~/.ssh/$PRIVATE_KEY_FILE
+chmod 600 ~/.ssh/$PRIVATE_KEY_FILE
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+eval `ssh-agent -s`
+ssh-add ~/.ssh/$PRIVATE_KEY_FILE
+#echo "machine github.com login $(opc GITHUB_USER) password $(opc GITHUB_PASSWORD)" > /root/.netrc
 echo "cloning repo to build"
 git clone $GIT_REPO_URL repodir
 cd repodir
