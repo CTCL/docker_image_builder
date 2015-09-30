@@ -13,7 +13,7 @@ ssh-keyscan github.com >> ~/.ssh/known_hosts
 eval `ssh-agent -s`
 ssh-add ~/.ssh/$PRIVATE_KEY_FILE
 #echo "machine github.com login $(opc GITHUB_USER) password $(opc GITHUB_PASSWORD)" > /root/.netrc
-echo "cloning repo to build"
+echo "cloning repo $GIT_REPO_URL to build"
 git clone $GIT_REPO_URL repodir
 cd repodir
 tar --exclude-vcs -cvzf repo.tar.gz *
