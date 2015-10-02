@@ -5,7 +5,7 @@ git clone https://github.com/CTCL/op_config_tool.git /usr/src/op_config_tool
 cd /usr/src/op_config_tool
 . ./setup.sh
 echo "fetching op config file"
-. ./fetch.sh
+. ./fetch.sh ${OP_CONFIG_FILE:-op.cfg} $OP_CONFIG_BUCKET/$OP_CONFIG_SUB_BUCKET
 echo "setting up github credentials"
 aws s3 cp s3://$OP_CONFIG_BUCKET/$OP_CONFIG_SUB_BUCKET/$PRIVATE_KEY_FILE ~/.ssh/$PRIVATE_KEY_FILE
 chmod 600 ~/.ssh/$PRIVATE_KEY_FILE
