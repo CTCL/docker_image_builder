@@ -7,7 +7,7 @@ cd /usr/src/op_config_tool
 echo "fetching op config file"
 . ./fetch.sh
 echo "setting up github credentials"
-aws s3 cp s3://$OP_CONFIG_BUCKET/$PRIVATE_KEY_FILE ~/.ssh/$PRIVATE_KEY_FILE
+aws s3 cp s3://$OP_CONFIG_BUCKET/$OP_CONFIG_SUB_BUCKET/$PRIVATE_KEY_FILE ~/.ssh/$PRIVATE_KEY_FILE
 chmod 600 ~/.ssh/$PRIVATE_KEY_FILE
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 eval `ssh-agent -s`
@@ -16,6 +16,9 @@ ssh-add ~/.ssh/$PRIVATE_KEY_FILE
 echo "cloning repo $GIT_REPO_URL to build"
 git clone $GIT_REPO_URL repodir
 cd repodir
+# hackity hack hack to inject op config bucket variable into build.
+# this depends on the dockerfile knowing what to do with this file.
+echo $OP_CONFIG_BUCKET > op_config_bucket
 tar --exclude-vcs -cvzf repo.tar.gz *
 
 echo "building image for ${DOCKER_REPO_NAME}"
